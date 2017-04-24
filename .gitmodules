@@ -1,0 +1,9 @@
+[submodule "external/json"]
+	path = external/json
+	url = git@github.com:nlohmann/json.git
+[submodule "external/cmdline"]
+	path = external/cmdline
+	url = git@github.com:tanakh/cmdline.git
+[submodule "external/Catch"]
+	path = external/Catch
+	url = git@github.com:philsquared/Catch.git

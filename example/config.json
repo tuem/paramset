@@ -1,0 +1,10 @@
+{
+	"text": "JSON",
+	"count": 100,
+	"radius": 10.0,
+	"path": {
+		"to": {
+			"flag": false
+		}
+	}
+}
