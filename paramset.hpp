@@ -161,7 +161,7 @@ public:
 	}
 
 	// returns parameter value
-	const parameter operator[](const std::string& name){
+	const parameter operator[](const std::string& name) const{
 		try{
 			return params.at(name);
 		}
@@ -171,7 +171,7 @@ public:
 	}
 
 	// returns parameter value as a specific type
-	template<typename T> T get(const std::string& name){
+	template<typename T> T get(const std::string& name) const{
 		return (*this)[name].as<T>();
 	}
 private:
