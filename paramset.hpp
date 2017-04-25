@@ -152,9 +152,8 @@ public:
 		for(const auto& r: parser.rest())
 			rest.push_back(r);
 		if(rest.size() < min_unnamed_argc){
-			std::stringstream ss;
-			ss << "requires " << min_unnamed_argc << " unnamed options" << std::endl;
-			throw exception(ss.str() + parser.usage());
+			throw exception("requires " + std::to_string(min_unnamed_argc) + " unnamed option" +
+					(min_unnamed_argc > 1 ? "s" : "") + '\n' + parser.usage());
 		}
 	}
 
@@ -175,22 +174,18 @@ public:
 private:
 	void json_set(const nlohmann::json& root, const definition& def){
 		if(def.json_path.size() > 0){
-			// find property
 			const auto* j = &root;
 			for(const auto& key: def.json_path){
 				if(j->count(key) == 0)
 					return;
-				j = &(*j)[key];
+				j = &(j->at(key));
 			}
 			try{
-				// try to read value as string
-				params[def.name] = j->get<std::string>();
+				params.insert(std::make_pair(def.name, j->get<std::string>()));
 			}
 			catch(const std::exception&){
-				// set non-string value
-				std::stringstream ss;
-				ss << *j;
-				params[def.name] = ss.str();
+				// if failed to get as string, convert non-string value to string
+				params.insert(std::make_pair(def.name, static_cast<std::stringstream&>(std::stringstream() << *j).str()));
 			}
 		}
 	}
