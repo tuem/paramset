@@ -145,14 +145,12 @@ public:
 				json_set(json, def); 
 		}
 		// overwrite parameters with command line arguments
-		for(const auto& def: defs){
+		for(const auto& def: defs)
 			if(def.long_option != "" && parser.exist(def.long_option))
 				params[def.name] = {parser.get<std::string>(def.long_option)};
-		}
 		// store rest of command line arguments
-		for(const auto& r: parser.rest()){
+		for(const auto& r: parser.rest())
 			rest.push_back(r);
-		}
 		if(rest.size() < min_unnamed_argc){
 			std::stringstream ss;
 			ss << "requires " << min_unnamed_argc << " unnamed options" << std::endl;
