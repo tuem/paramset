@@ -151,10 +151,9 @@ public:
 		// store rest of command line arguments
 		for(const auto& r: parser.rest())
 			rest.push_back(r);
-		if(rest.size() < min_unnamed_argc){
+		if(rest.size() < min_unnamed_argc)
 			throw exception("requires " + std::to_string(min_unnamed_argc) + " unnamed option" +
 					(min_unnamed_argc > 1 ? "s" : "") + '\n' + parser.usage());
-		}
 	}
 
 	// returns parameter value
