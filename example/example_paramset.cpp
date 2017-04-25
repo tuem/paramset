@@ -39,7 +39,7 @@ int main(int argc, char* argv[]){
 		std::cout << "circumference: " << 2 * pm.get<double>("rad") * pm.get<double>("PI") << std::endl;
 
 		// 7. use the rest of command line arguments
-		for(auto p: pm.rest)
+		for(const auto& p: pm.rest)
 			std::cout << "rest: " << p.as<std::string>() << std::endl;
 	}
 	catch(const paramset::exception& e){
