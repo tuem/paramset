@@ -147,7 +147,7 @@ public:
 		// overwrite parameters with command line arguments
 		for(const auto& def: defs)
 			if(def.long_option != "" && parser.exist(def.long_option))
-				params[def.name] = {parser.get<std::string>(def.long_option)};
+				params[def.name] = parser.get<std::string>(def.long_option);
 		// store rest of command line arguments
 		for(const auto& r: parser.rest())
 			rest.push_back(r);
@@ -181,11 +181,11 @@ private:
 				j = &(j->at(key));
 			}
 			try{
-				params.insert(std::make_pair(def.name, j->get<std::string>()));
+				params[def.name] = j->get<std::string>();
 			}
 			catch(const std::exception&){
 				// if failed to get as string, convert non-string value to string
-				params.insert(std::make_pair(def.name, static_cast<std::stringstream&>(std::stringstream() << *j).str()));
+				params[def.name] = static_cast<std::stringstream&>(std::stringstream() << *j).str();
 			}
 		}
 	}
