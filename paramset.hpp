@@ -73,11 +73,11 @@ struct parameter{
 	}
 
 	operator bool() const{
-		if(value == "" || value == "0")
+		if(value.empty() || value == "0")
 			return false;
 		std::string lower;
 		std::transform(std::begin(value), std::end(value), std::back_inserter(lower), ::tolower);
-		return !(lower == "false");
+		return lower != "false";
 	}
 
 	template<typename T> T as() const{
@@ -123,16 +123,16 @@ public:
 	}
 
 	// load parameters from command line arguments and config file
-	void load(int argc, char* argv[], const std::string& conf = "", size_t min_unnamed_argc = 0){
+	void load(int argc, char* argv[], const std::string conf = "", size_t min_unnamed_argc = 0){
 		// parse command line arguments
 		cmdline::parser parser;
 		for(const auto& def: defs)
-			if(def.long_option != "")
+			if(!def.long_option.empty())
 				parser.add(def.long_option, def.short_option, def.description, def.required, def.default_value.as<std::string>());
 		if(!parser.parse(argc, argv))
 			throw exception(parser.error_full() + parser.usage());
 		// overwrite parameters with config file
-		if(conf != "" && parser.exist(conf)){
+		if(!conf.empty() && parser.exist(conf)){
 			std::ifstream ifs(parser.get<std::string>(conf));
 			nlohmann::json json;
 			try{
@@ -146,7 +146,7 @@ public:
 		}
 		// overwrite parameters with command line arguments
 		for(const auto& def: defs)
-			if(def.long_option != "" && parser.exist(def.long_option))
+			if(!def.long_option.empty() && parser.exist(def.long_option))
 				params[def.name] = parser.get<std::string>(def.long_option);
 		// store rest of command line arguments
 		for(const auto& r: parser.rest())
