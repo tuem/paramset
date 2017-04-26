@@ -32,7 +32,7 @@ example/example_paramset.cpp:
 
 int main(int argc, char* argv[]){
 	// 2. define parameters
-	//   - format: key, default_value[, json_path][, long_option, short_option, description, [required_in_cmd]]
+	//   - format: name, default_value[, json_path][, long_option, short_option, description, [required_in_cmd]]
 	paramset::definitions defs = {
 		// default_value should be a string, int, double or bool
 		{"txt", "Hello, paramset!", {"text"}, "strarg", 's', "string argument", false},
@@ -68,11 +68,11 @@ int main(int argc, char* argv[]){
 		std::cout << "circumference: " << 2 * pm.get<double>("rad") * pm.get<double>("PI") << std::endl;
 
 		// 7. use the rest of command line arguments
-		for(auto p: pm.rest)
+		for(const auto& p: pm.rest)
 			std::cout << "rest: " << p.as<std::string>() << std::endl;
 	}
-	catch(paramset::exception e){
-		std::cerr << e.what() << std::endl;
+	catch(const paramset::exception& e){
+		std::cerr << "an error occured: " << e.what() << std::endl;
 		exit(1);
 	}
 	return 0;
