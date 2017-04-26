@@ -3,7 +3,7 @@
 
 int main(int argc, char* argv[]){
 	// 2. define parameters
-	//   - format: name, default_value[, json_path][, long_option, short_option, description, [required_in_cmd]]
+	//   - name, default[, json_path][, long_opt, short_opt, description, [required_in_cmd]]
 	paramset::definitions defs = {
 		// default_value should be a string, int, double or bool
 		{"txt", "Hello, paramset!", {"text"}, "strarg", 's', "string argument", false},
@@ -25,7 +25,7 @@ int main(int argc, char* argv[]){
 		//   - command line argument named "config" (default: "") specifies config file path
 		//   - if config file exists, overwrite parameters with it
 		//   - then, overwrite with command line arguments
-		//   - finally, at least 2 (default: 0) command line arguments without option names are required
+		//   - finally, at least 2 (default: 0) unnamed command line arguments are required
 		pm.load(argc, argv, "config", 2);
 
 		// 5. read parameter
@@ -36,7 +36,8 @@ int main(int argc, char* argv[]){
 
 		// 6. directly use parameter in function call
 		std::cout << "flag: " << pm.get<bool>("flg") << std::endl;
-		std::cout << "circumference: " << 2 * pm.get<double>("rad") * pm.get<double>("PI") << std::endl;
+		std::cout << "circumference: " <<
+				2 * pm.get<double>("rad") * pm.get<double>("PI") << std::endl;
 
 		// 7. use the rest of command line arguments
 		for(const auto& p: pm.rest)
