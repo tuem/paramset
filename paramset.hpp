@@ -30,17 +30,6 @@ limitations under the License.
 
 namespace paramset{
 
-// common exception
-struct exception: public std::exception{
-	const std::string message;
-
-	explicit exception(const std::string& message): message(message){}
-
-	const char* what() const noexcept override{
-		return message.c_str();
-	}
-};
-
 // internal representation of parameters
 struct parameter{
 	std::string value;
@@ -55,21 +44,11 @@ struct parameter{
 	}
 
 	operator int() const{
-		try{
-			return std::stoi(value);
-		}
-		catch(const std::invalid_argument& e){
-			throw exception("invalid value: " + value);
-		}
+		return std::stoi(value);
 	}
 
 	operator double() const{
-		try{
-			return std::stod(value);
-		}
-		catch(const std::invalid_argument& e){
-			throw exception("invalid value: " + value);
-		}
+		return std::stod(value);
 	}
 
 	operator bool() const{
@@ -130,17 +109,12 @@ public:
 			if(!def.long_option.empty())
 				parser.add(def.long_option, def.short_option, def.description, def.required, def.default_value.as<std::string>());
 		if(!parser.parse(argc, argv))
-			throw exception(parser.error_full() + parser.usage());
+			throw std::invalid_argument(parser.error_full() + parser.usage());
 		// overwrite parameters with config file
 		if(!conf.empty() && parser.exist(conf)){
 			std::ifstream ifs(parser.get<std::string>(conf));
 			nlohmann::json json;
-			try{
-				ifs >> json;
-			}
-			catch(const std::exception& e){
-				throw exception(e.what());
-			}
+			ifs >> json;
 			for(const auto& def: defs)
 				json_set(json, def); 
 		}
@@ -152,18 +126,13 @@ public:
 		for(const auto& r: parser.rest())
 			rest.push_back(r);
 		if(rest.size() < min_unnamed_argc)
-			throw exception("requires " + std::to_string(min_unnamed_argc) + " unnamed option" +
+			throw std::invalid_argument("requires " + std::to_string(min_unnamed_argc) + " unnamed option" +
 					(min_unnamed_argc > 1 ? "s" : "") + '\n' + parser.usage());
 	}
 
 	// returns parameter value
 	const parameter operator[](const std::string& name) const{
-		try{
-			return params.at(name);
-		}
-		catch(const std::out_of_range& e){
-			throw exception("invalid parameter name: " + name);
-		}
+		return params.at(name);
 	}
 
 	// returns parameter value as a specific type

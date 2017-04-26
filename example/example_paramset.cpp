@@ -42,7 +42,7 @@ int main(int argc, char* argv[]){
 		for(const auto& p: pm.rest)
 			std::cout << "rest: " << p.as<std::string>() << std::endl;
 	}
-	catch(const paramset::exception& e){
+	catch(const std::exception& e){
 		std::cerr << "an error occured: " << e.what() << std::endl;
 		exit(1);
 	}
