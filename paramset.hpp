@@ -117,7 +117,7 @@ public:
 			nlohmann::json json;
 			ifs >> json;
 			for(const auto& def: defs)
-				if(def.json_path.size() > 0)
+				if(!def.json_path.empty())
 					json_set(json, def);
 		}
 		// overwrite parameters with command line arguments
