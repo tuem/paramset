@@ -113,9 +113,8 @@ public:
 			throw std::invalid_argument(parser.error_full() + parser.usage());
 		// overwrite parameters with config file
 		if(!conf.empty() && parser.exist(conf)){
-			std::ifstream ifs(parser.get<std::string>(conf));
 			nlohmann::json json;
-			ifs >> json;
+			std::ifstream(parser.get<std::string>(conf)) >> json;
 			for(const auto& def: defs)
 				if(!def.json_path.empty())
 					json_set(json, def);
