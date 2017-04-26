@@ -107,7 +107,8 @@ public:
 		cmdline::parser parser;
 		for(const auto& def: defs)
 			if(!def.long_option.empty())
-				parser.add(def.long_option, def.short_option, def.description, def.required, def.default_value.as<std::string>());
+				parser.add(def.long_option, def.short_option, def.description, def.required,
+						def.default_value.as<std::string>());
 		if(!parser.parse(argc, argv))
 			throw std::invalid_argument(parser.error_full() + parser.usage());
 		// overwrite parameters with config file
@@ -116,7 +117,8 @@ public:
 			nlohmann::json json;
 			ifs >> json;
 			for(const auto& def: defs)
-				json_set(json, def); 
+				if(def.json_path.size() > 0)
+					json_set(json, def);
 		}
 		// overwrite parameters with command line arguments
 		for(const auto& def: defs)
@@ -126,8 +128,8 @@ public:
 		for(const auto& r: parser.rest())
 			rest.push_back(r);
 		if(rest.size() < min_unnamed_argc)
-			throw std::invalid_argument("requires " + std::to_string(min_unnamed_argc) + " unnamed option" +
-					(min_unnamed_argc > 1 ? "s" : "") + '\n' + parser.usage());
+			throw std::invalid_argument("requires " + std::to_string(min_unnamed_argc) +
+					" unnamed option" + (min_unnamed_argc > 1 ? "s" : "") + '\n' + parser.usage());
 	}
 
 	// returns parameter value
@@ -141,20 +143,16 @@ public:
 	}
 private:
 	void json_set(const nlohmann::json& root, const definition& def){
-		if(def.json_path.size() > 0){
-			const auto* j = &root;
-			for(const auto& key: def.json_path){
-				if(j->count(key) == 0)
-					return;
-				j = &(j->at(key));
-			}
-			try{
-				params[def.name] = j->get<std::string>();
-			}
-			catch(const std::exception&){
-				// if failed to get as string, convert non-string value to string
-				params[def.name] = static_cast<std::stringstream&>(std::stringstream() << *j).str();
-			}
+		const auto* j = &root;
+		for(auto i = std::begin(def.json_path); i != std::end(def.json_path); j = &(j->at(*i++)))
+			if(j->count(*i) == 0)
+				return;
+		try{
+			params[def.name] = j->get<std::string>();
+		}
+		catch(const std::exception&){
+			// if failed to get as string, convert non-string value to string
+			params[def.name] = static_cast<std::stringstream&>(std::stringstream() << *j).str();
 		}
 	}
 };
