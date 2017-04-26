@@ -105,26 +105,26 @@ $ make example
 ### Result
 
 ```sh
-g++ -g -std=c++11 -Wall -I .. -I ../external/cmdline -I ../external/json/src example_paramset.cpp -o example_paramset
+g++ -std=c++11 -Wall -I .. -I ../external/cmdline -I ../external/json/src example_paramset.cpp -o example_paramset
 ./example_paramset foo bar
 text: Hello, paramset!
 count: 1
 flag: 1
-circumference: 7.222
+circumference: 14.444
 rest: foo
 rest: bar
 ./example_paramset -c config.json foo bar
 text: JSON
 count: 100
 flag: 0
-circumference: 31.4
+circumference: 62.8
 rest: foo
 rest: bar
 ./example_paramset -c config.json -s OVERWRITTEN_BY_CMD_ARG -i 123 --doublearg 456.7 foo bar baz
 text: OVERWRITTEN_BY_CMD_ARG
 count: 123
 flag: 0
-circumference: 1434.04
+circumference: 2868.08
 rest: foo
 rest: bar
 rest: baz
