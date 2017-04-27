@@ -62,6 +62,11 @@ struct parameter{
 	template<typename T> T as() const{
 		return static_cast<T>(*this);
 	}
+
+	template<typename T> parameter& operator=(const T& t){
+		value = parameter(t).value;
+		return *this;
+	}
 };
 
 // parameter definitions
@@ -132,13 +137,14 @@ public:
 	}
 
 	// returns parameter value
-	const parameter operator[](const std::string& name) const{
-		return params.at(name);
+	parameter& operator[](const std::string& name){
+	//const parameter operator[](const std::string& name) const{
+		return params[name];
 	}
 
 	// returns parameter value as a specific type
 	template<typename T> T get(const std::string& name) const{
-		return (*this)[name].as<T>();
+		return params.at(name).as<T>();
 	}
 private:
 	void json_set(const nlohmann::json& root, const definition& def){

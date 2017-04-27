@@ -28,7 +28,7 @@ int main(int argc, char* argv[]){
 		//   - finally, at least 2 (default: 0) unnamed command line arguments are required
 		pm.load(argc, argv, "config", 2);
 
-		// 5. read parameter
+		// 5. use parameter
 		std::string txt = pm["txt"];
 		int cnt = pm["cnt"];
 		std::cout << "text: " << txt << std::endl;
@@ -42,6 +42,12 @@ int main(int argc, char* argv[]){
 		// 7. use the rest of command line arguments
 		for(const auto& p: pm.rest)
 			std::cout << "rest: " << p.as<std::string>() << std::endl;
+
+		// 8. you can update or add parameters if needed
+		pm["cnt"] = 0;
+		pm["prob"] = 0.5;
+		std::cout << "new count: " << pm.get<int>("cnt") << std::endl;
+		std::cout << "probability: " << pm.get<double>("prob") << std::endl;
 	}
 	catch(const std::exception& e){
 		std::cerr << "an error occured: " << e.what() << std::endl;

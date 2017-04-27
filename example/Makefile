@@ -2,7 +2,7 @@ CC = g++
 CFLAGS = -std=c++11 -Wall
 CINCLUDES = -I .. -I ../external/cmdline -I ../external/json/src
 PARAMSET = ../paramset.hpp
-SRC = example_paramset.cpp
+SRC = paramset.cpp
 BIN = $(subst .cpp,,$(SRC))
 all: $(BIN)
 
