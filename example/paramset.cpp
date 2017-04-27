@@ -47,7 +47,7 @@ int main(int argc, char* argv[]){
 		pm["cnt"] = 0;
 		pm["prob"] = 0.5;
 		std::cout << "new count: " << pm.get<int>("cnt") << std::endl;
-		std::cout << "probability: " << pm.get<double>("prob") << std::endl;
+		std::cout << "probability: " << pm.get<double>("prob") << std::endl << std::endl;
 	}
 	catch(const std::exception& e){
 		std::cerr << "an error occured: " << e.what() << std::endl;

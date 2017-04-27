@@ -57,7 +57,7 @@ int main(int argc, char* argv[]){
 		//   - finally, at least 2 (default: 0) unnamed command line arguments are required
 		pm.load(argc, argv, "config", 2);
 
-		// 5. read parameter
+		// 5. use parameter
 		std::string txt = pm["txt"];
 		int cnt = pm["cnt"];
 		std::cout << "text: " << txt << std::endl;
@@ -71,6 +71,12 @@ int main(int argc, char* argv[]){
 		// 7. use the rest of command line arguments
 		for(const auto& p: pm.rest)
 			std::cout << "rest: " << p.as<std::string>() << std::endl;
+
+		// 8. you can update or add parameters if needed
+		pm["cnt"] = 0;
+		pm["prob"] = 0.5;
+		std::cout << "new count: " << pm.get<int>("cnt") << std::endl;
+		std::cout << "probability: " << pm.get<double>("prob") << std::endl << std::endl;
 	}
 	catch(const std::exception& e){
 		std::cerr << "an error occured: " << e.what() << std::endl;
@@ -105,22 +111,28 @@ $ make example
 ### Result
 
 ```sh
-g++ -std=c++11 -Wall -I .. -I ../external/cmdline -I ../external/json/src example_paramset.cpp -o example_paramset
-./example_paramset foo bar
+g++ -std=c++11 -Wall -I .. -I ../external/cmdline -I ../external/json/src paramset.cpp -o paramset
+./paramset foo bar
 text: Hello, paramset!
 count: 1
 flag: 1
 circumference: 14.444
 rest: foo
 rest: bar
-./example_paramset -c config.json foo bar
+new count: 0
+probability: 0.5
+
+./paramset -c config.json foo bar
 text: JSON
 count: 100
 flag: 0
 circumference: 62.8
 rest: foo
 rest: bar
-./example_paramset -c config.json -s OVERWRITTEN_BY_CMD_ARG -i 123 --doublearg 456.7 foo bar baz
+new count: 0
+probability: 0.5
+
+./paramset -c config.json -s OVERWRITTEN_BY_CMD_ARG -i 123 --doublearg 456.7 foo bar baz
 text: OVERWRITTEN_BY_CMD_ARG
 count: 123
 flag: 0
@@ -128,4 +140,6 @@ circumference: 2868.08
 rest: foo
 rest: bar
 rest: baz
+new count: 0
+probability: 0.5
 ```
