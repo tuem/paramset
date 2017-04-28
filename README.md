@@ -2,8 +2,8 @@
 
 ## Overview
 - Header-only library for managing parameters
-  - Easy definition of parameters and their default values
-  - Integrated support for JSON config file and command line arguments by utilizing [JSON for Modern C++](https://github.com/nlohmann/json) and [cmdline](https://github.com/tanakh/cmdline)
+  - Easy definition of parameters
+  - Integrated support for JSON config file and command line arguments
   - Type-safe access to obtained parameters
 
 ## Requirements
@@ -86,7 +86,7 @@ int main(int argc, char* argv[]){
 }
 ```
 
-and example/config.json:
+example/config.json:
 
 ```json
 {
@@ -132,8 +132,8 @@ rest: bar
 new count: 0
 probability: 0.5
 
-./paramset -c config.json -s OVERWRITTEN_BY_CMD_ARG -i 123 --doublearg 456.7 foo bar baz
-text: OVERWRITTEN_BY_CMD_ARG
+./paramset -c config.json -s 'command line argument' -i 123 --doublearg 456.7 foo bar baz
+text: command line argument
 count: 123
 flag: 0
 circumference: 2868.08
