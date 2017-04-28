@@ -143,3 +143,8 @@ rest: baz
 new count: 0
 probability: 0.5
 ```
+
+### Use in Your Project
+```sh
+$ cp external/cmdline/cmdline.h external/json/src/json.hpp paramset.hpp {your include directory}
+```
