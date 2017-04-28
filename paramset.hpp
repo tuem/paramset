@@ -17,7 +17,8 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-#pragma once
+#ifndef __PARAMSET_HPP__
+#define __PARAMSET_HPP__
 
 #include <string>
 #include <vector>
@@ -122,7 +123,7 @@ public:
 			std::ifstream(parser.get<std::string>(conf)) >> json;
 			for(const auto& def: defs)
 				if(!def.json_path.empty())
-					json_set(json, def);
+					load_parameter_from_json(json, def);
 		}
 		// overwrite parameters with command line arguments
 		for(const auto& def: defs)
@@ -146,8 +147,9 @@ public:
 		return params.at(name).as<T>();
 	}
 private:
-	void json_set(const nlohmann::json& root, const definition& def){
-		const auto* j = &root;
+	// find def.json_path from json and overwrite params[def.name] if exists
+	void load_parameter_from_json(const nlohmann::json& json, const definition& def){
+		const auto* j = &json;
 		for(auto i = std::begin(def.json_path); i != std::end(def.json_path); j = &(j->at(*i++)))
 			if(j->count(*i) == 0)
 				return;
@@ -162,3 +164,5 @@ private:
 };
 
 };
+
+#endif
