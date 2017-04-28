@@ -9,7 +9,7 @@ all: $(BIN)
 example: $(BIN)
 	./$(BIN) foo bar
 	./$(BIN) -c config.json foo bar
-	./$(BIN) -c config.json -s OVERWRITTEN_BY_CMD_ARG -i 123 --doublearg 456.7 foo bar baz
+	./$(BIN) -c config.json -s 'command line argument' -i 123 --doublearg 456.7 foo bar baz
 
 $(BIN): $(SRC) $(PARAMSET)
 	$(CC) $(CFLAGS) $(CINCLUDES) $(SRC) -o $(BIN)
