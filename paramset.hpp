@@ -138,7 +138,6 @@ public:
 
 	// returns parameter value
 	parameter& operator[](const std::string& name){
-	//const parameter operator[](const std::string& name) const{
 		return params[name];
 	}
 
