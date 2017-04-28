@@ -33,7 +33,7 @@ example/example_paramset.cpp:
 int main(int argc, char* argv[]){
 	// 2. define parameters
 	//   - name, default[, json_path][, long_opt, short_opt, description, [required_in_cmd]]
-	paramset::definitions defs = {
+	const paramset::definitions defs = {
 		// default_value should be a string, int, double or bool
 		{"txt", "Hello, paramset!", {"text"}, "strarg", 's', "string argument", false},
 		// required_in_cmd is optional (default: false)
