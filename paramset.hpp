@@ -108,7 +108,7 @@ public:
 	}
 
 	// load parameters from command line arguments and config file
-	void load(int argc, char* argv[], const std::string conf = "", size_t min_unnamed_argc = 0){
+	void load(int argc, char* argv[], const std::string conf_option = "", size_t min_unnamed_argc = 0){
 		// parse command line arguments
 		cmdline::parser parser;
 		for(const auto& def: defs)
@@ -118,12 +118,12 @@ public:
 		if(!parser.parse(argc, argv))
 			throw std::invalid_argument(parser.error_full() + parser.usage());
 		// overwrite parameters with config file
-		if(!conf.empty() && parser.exist(conf)){
+		if(!conf_option.empty() && parser.exist(conf_option)){
 			nlohmann::json json;
-			std::ifstream(parser.get<std::string>(conf)) >> json;
+			std::ifstream(parser.get<std::string>(conf_option)) >> json;
 			for(const auto& def: defs)
 				if(!def.json_path.empty())
-					load_parameter_from_json(json, def);
+					load_parameter_from_json(&json, def);
 		}
 		// overwrite parameters with command line arguments
 		for(const auto& def: defs)
@@ -148,8 +148,7 @@ public:
 	}
 private:
 	// find def.json_path from json and overwrite params[def.name] if exists
-	void load_parameter_from_json(const nlohmann::json& json, const definition& def){
-		const auto* j = &json;
+	void load_parameter_from_json(const nlohmann::json* j, const definition& def){
 		for(auto i = std::begin(def.json_path); i != std::end(def.json_path); j = &(j->at(*i++)))
 			if(j->count(*i) == 0)
 				return;
