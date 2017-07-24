@@ -157,7 +157,9 @@ private:
 		}
 		catch(const std::exception&){
 			// if failed to get as string, convert non-string value to string
-			params[def.name] = static_cast<std::stringstream&>(std::stringstream() << *j).str();
+			std::stringstream ss;
+			ss << *j;
+			params[def.name] = ss.str();
 		}
 	}
 };
