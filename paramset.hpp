@@ -96,8 +96,6 @@ using definitions = std::vector<definition>;
 
 // main class for managing parameters
 class manager{
-	const definitions defs;
-	std::map<std::string, parameter> params;
 public:
 	// command line arguments without option names
 	std::vector<parameter> rest;
@@ -146,7 +144,11 @@ public:
 	template<typename T> T get(const std::string& name) const{
 		return params.at(name).as<T>();
 	}
+
 private:
+	const definitions defs;
+	std::map<std::string, parameter> params;
+
 	// find def.json_path from json and overwrite params[def.name] if exists
 	void load_parameter_from_json(const nlohmann::json* j, const definition& def){
 		for(auto i = std::begin(def.json_path); i != std::end(def.json_path); j = &(j->at(*i++)))
@@ -165,5 +167,4 @@ private:
 };
 
 };
-
 #endif
