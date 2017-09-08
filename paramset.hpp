@@ -17,8 +17,8 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-#ifndef __PARAMSET_HPP__
-#define __PARAMSET_HPP__
+#ifndef PARAMSET_HPP
+#define PARAMSET_HPP
 
 #include <string>
 #include <vector>
