@@ -24,7 +24,6 @@ limitations under the License.
 #include <vector>
 #include <map>
 #include <fstream>
-#include <sstream>
 
 #include "cmdline.h"
 #include "json.hpp"
@@ -158,10 +157,8 @@ private:
 			params[def.name] = j->get<std::string>();
 		}
 		catch(const std::exception&){
-			// if failed to get as string, convert non-string value to string
-			std::stringstream ss;
-			ss << *j;
-			params[def.name] = ss.str();
+			// if failed to get as string, dump non-string value as string
+			params[def.name] = j->dump();
 		}
 	}
 };
